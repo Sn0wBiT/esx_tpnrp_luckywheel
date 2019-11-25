@@ -142,6 +142,7 @@ AddEventHandler('esx_tpnrp_luckywheel:getLucky', function()
                 end)
                 TriggerClientEvent("esx_tpnrp_luckywheel:doRoll", -1, _priceIndex)
             else
+                TriggerClientEvent("esx_tpnrp_luckywheel:rollFinished", -1)    
                 TriggerClientEvent('esx:showNotification', _source, "Bạn không có đủ tiền trong ví để chơi! Yêu cầu " .. ESX.Math.GroupDigits(amount) .. "$ cho 1 lần quay!")
             end
         end

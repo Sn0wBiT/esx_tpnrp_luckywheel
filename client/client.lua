@@ -74,6 +74,7 @@ end)
 RegisterNetEvent("esx_tpnrp_luckywheel:doRoll")
 AddEventHandler("esx_tpnrp_luckywheel:doRoll", function(_priceIndex) 
     _isRolling = true
+    SetEntityHeading(_wheel, -30.0)
     SetEntityRotation(_wheel, 0.0, 0.0, 0.0, 1, true)
     Citizen.CreateThread(function()
         local speedIntCnt = 1

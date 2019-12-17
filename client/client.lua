@@ -3,6 +3,7 @@ local _wheel = nil
 local _lambo = nil
 local _isShowCar = false
 local _wheelPos = vector3(1109.76, 227.89, -49.64)
+local _baseWheelPos = vector3(1111.05, 229.81, -50.38)
 local Keys = {
 	["ESC"] = 322, ["BACKSPACE"] = 177, ["E"] = 38, ["ENTER"] = 18,	["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173
 }
@@ -19,9 +20,21 @@ Citizen.CreateThread(function()
 
     if ESX.IsPlayerLoaded() then
         local model = GetHashKey('vw_prop_vw_luckywheel_02a')
+        local baseWheelModel GetHashKey('vw_prop_vw_luckywheel_01a')
         local carmodel = GetHashKey('lp700r')
 
         Citizen.CreateThread(function()
+            -- Base wheel
+            RequestModel(baseWheelModel)
+            while not HasModelLoaded(baseWheelModel) do
+                Citizen.Wait(0)
+            end
+
+            _basewheel = CreateObject(baseWheelModel, _baseWheelPos.x, _baseWheelPos.y, _baseWheelPos.z, false, false, true)
+            SetEntityHeading(_basewheel, 0.0)
+            SetModelAsNoLongerNeeded(baseWheelModel)
+
+            -- Wheel
             RequestModel(model)
 
             while not HasModelLoaded(model) do

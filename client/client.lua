@@ -20,7 +20,7 @@ Citizen.CreateThread(function()
 
     if ESX.IsPlayerLoaded() then
         local model = GetHashKey('vw_prop_vw_luckywheel_02a')
-        local baseWheelModel GetHashKey('vw_prop_vw_luckywheel_01a')
+        local baseWheelModel = GetHashKey('vw_prop_vw_luckywheel_01a')
         local carmodel = GetHashKey('lp700r')
 
         Citizen.CreateThread(function()

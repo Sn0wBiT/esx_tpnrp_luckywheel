@@ -1,19 +1,20 @@
-ESX = nil
+QBCore = nil
 isRoll = false
 amount = 50000
 
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 RegisterServerEvent('esx_tpnrp_luckywheel:getLucky')
 AddEventHandler('esx_tpnrp_luckywheel:getLucky', function()
     local _source = source
-    local xPlayer = ESX.GetPlayerFromId(_source)
+    local xPlayer = QBCore.Functions.GetPlayer(_source)
     if not isRoll then
         if xPlayer ~= nil then
-            if xPlayer.getMoney() >= amount then
-                xPlayer.removeMoney(amount)
+            local chips = xPlayer.Functions.GetItemByName('casinochips')
+            if chips ~= nil and chips.amount >= amount then
+                xPlayer.Functions.RemoveItem('casinochips', amount)
                 isRoll = true
-                -- local _priceIndex = math.random(1, 20)
+
                 local _randomPrice = math.random(1, 100)
                 if _randomPrice == 1 then
                     -- Win car
@@ -87,17 +88,13 @@ AddEventHandler('esx_tpnrp_luckywheel:getLucky', function()
                     isRoll = false
                     -- Give Price
                     if _priceIndex == 1 or _priceIndex == 9 or _priceIndex == 13 or _priceIndex == 17 then
-                        -- print("win mu~ 1, giap 3")
-                        xPlayer.addInventoryItem("police_helmet_1", 1)
-                        xPlayer.addInventoryItem("bullet_wear_1", 1)
-                        TriggerClientEvent('chatMessage', -1, '', {255,255,255}, '^8Vòng quay: ^1'.. xPlayer.name .. " đã thắng được 1 mũ 1, giáp 1 !")
+                        xPlayer.Functions.AddItem("casinochips", 25000)
+                        TriggerClientEvent('QBCore:Notify', _source, 'You Won 25,000 Casino Chips!', 'success')
                     elseif _priceIndex == 2 or _priceIndex == 6 or _priceIndex == 10 or _priceIndex == 14 or _priceIndex == 18 then
-                        -- print("banh mi + nuoc")
-                        xPlayer.addInventoryItem("bread", 10)
-                        xPlayer.addInventoryItem("water", 24)
-                        TriggerClientEvent('chatMessage', -1, '', {255,255,255}, '^8Vòng quay: ^1'.. xPlayer.name .. " đã thắng được 1 lốc nước suối 24 chai + 10 cái bánh mì!")
+                        xPlayer.Functions.AddItem("sandwich", 10)
+                        xPlayer.Functions.AddItem("water_bottle", 24)
+                        TriggerClientEvent('QBCore:Notify', _source, 'You Won....Sandwich and Water?', 'success')
                     elseif _priceIndex == 3 or _priceIndex == 7 or _priceIndex == 15 or _priceIndex == 20 then
-                        -- print("Win money")
                         local _money = 0
                         if _priceIndex == 3 then
                             _money = 20000
@@ -108,10 +105,9 @@ AddEventHandler('esx_tpnrp_luckywheel:getLucky', function()
                         elseif _priceIndex == 20 then
                             _money = 50000
                         end
-                        xPlayer.addMoney(_money)
-                        TriggerClientEvent('chatMessage', -1, '', {255,255,255}, '^8Vòng quay: ^1'.. xPlayer.name .. " đã thắng được " .. ESX.Math.GroupDigits(_money) .. "$")
+                        xPlayer.Functions.AddMoney('cash', _money)
+                        TriggerClientEvent('QBCore:Notify', _source, 'You Won $'.._money..'!', 'success')
                     elseif _priceIndex == 4 or _priceIndex == 8 or _priceIndex == 11 or _priceIndex == 16 then
-                        -- print("Black money x2")
                         local _blackMoney = 0
                         if _priceIndex == 4 then
                             _blackMoney = 10000
@@ -122,28 +118,27 @@ AddEventHandler('esx_tpnrp_luckywheel:getLucky', function()
                         elseif _priceIndex == 16 then
                             _blackMoney = 25000
                         end
-                        xPlayer.addAccountMoney("black_money", _blackMoney * 10)
-                        -- xPlayer.addMoney(_blackMoney * 2)
-                        TriggerClientEvent('chatMessage', -1, '', {255,255,255}, '^8Vòng quay: ^1'.. xPlayer.name .. " đã thắng được " .. ESX.Math.GroupDigits(_blackMoney * 10) .. "$")
+                        xPlayer.Functions.AddItem("markedbills", _blackMoney * 10)
+                        TriggerClientEvent('QBCore:Notify', _source, 'You Won Marked Bills!', 'success')
                     elseif _priceIndex == 5 then
                         -- print("Win 300,000$")
-                        xPlayer.addMoney(300000)
-                        TriggerClientEvent('chatMessage', -1, '', {255,255,255}, '^8Vòng quay: ^1'.. xPlayer.name .. " đã thắng được giải 300,000$!")
+                        xPlayer.Functions.AddMoney('cash', 300000)
+                        TriggerClientEvent('QBCore:Notify', _source, 'You Won $300,000 Cash!', 'success')
                     elseif _priceIndex == 12 then
                         -- print("Win ak gold")
-                        xPlayer.addInventoryItem("attach_skin_ak", 1)
-                        TriggerClientEvent('chatMessage', -1, '', {255,255,255}, '^8Vòng quay: ^1'.. xPlayer.name .. " đã thắng được 1 Skin AK Gold!")
+                        xPlayer.Functions.AddItem("weapon_pistol50", 1)
+                        TriggerClientEvent('QBCore:Notify', _source, 'You Won A .50 Pistol!', 'success')
                     elseif _priceIndex == 19 then
                         -- print("Win car lp700r")
                         TriggerClientEvent("esx_tpnrp_luckywheel:winCar", _source)
-                        TriggerClientEvent('chatMessage', -1, '', {255,255,255}, '^8Vòng quay: ^1'.. xPlayer.name .. " đã thắng được 1 Skin AK Gold!")
+                        TriggerClientEvent('QBCore:Notify', _source, 'You Won A Fucking Car!', 'success')
                     end
                     TriggerClientEvent("esx_tpnrp_luckywheel:rollFinished", -1)
                 end)
                 TriggerClientEvent("esx_tpnrp_luckywheel:doRoll", -1, _priceIndex)
             else
                 TriggerClientEvent("esx_tpnrp_luckywheel:rollFinished", -1)    
-                TriggerClientEvent('esx:showNotification', _source, "Bạn không có đủ tiền trong ví để chơi! Yêu cầu " .. ESX.Math.GroupDigits(amount) .. "$ cho 1 lần quay!")
+                TriggerClientEvent('QBCore:Notify', _source, 'You Need 50,000 Chips To Spin!', 'error')
             end
         end
     end

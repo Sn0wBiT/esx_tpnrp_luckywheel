@@ -103,7 +103,7 @@ AddEventHandler("esx_tpnrp_luckywheel:doRoll", function(_priceIndex)
             rollspeed = speedIntCnt / 10
             local _y = retval.y - rollspeed
             _rollAngle = _rollAngle - rollspeed
-            SetEntityRotation(_wheel, 0.0, _y, 0.0, 1, true)
+            SetEntityRotation(_wheel, 0.0, _y, -30.9754, 2, true)
             Citizen.Wait(0)
         end
     end)

@@ -138,7 +138,7 @@ AddEventHandler('esx_tpnrp_luckywheel:getLucky', function()
                 TriggerClientEvent("esx_tpnrp_luckywheel:doRoll", -1, _priceIndex)
             else
                 TriggerClientEvent("esx_tpnrp_luckywheel:rollFinished", -1)    
-                TriggerClientEvent('QBCore:Notify', _source, 'You Need 50,000 Chips To Spin!', 'error')
+                TriggerClientEvent('QBCore:Notify', _source, 'You Need '..amount..' Chips To Spin!', 'error')
             end
         end
     end

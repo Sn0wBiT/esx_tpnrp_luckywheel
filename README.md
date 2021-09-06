@@ -7,4 +7,4 @@ Fork of esx_tpnrp_luckywheel to work with [QBCore](https://github.com/qbcore-fra
 
 ### Screenshot:
 
-![alt text](https://cdn.izmystic.gay/images/guzv42g9.jpg)
+![alt text](https://cdn.izmystic.gay/images/tdpmvgto.jpg)

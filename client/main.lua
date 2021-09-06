@@ -128,7 +128,7 @@ function doRoll()
         TaskGoStraightToCoord(playerPed, _movePos.x, _movePos.y, _movePos.z, 1.0, -1, 312.2, 0.0)
         local _isMoved = false
         while not _isMoved do
-            local coords = GetEntityCoords(PlayerPedId())
+            local coords = GetEntityCoords(playerPed)
             if coords.x >= (_movePos.x - 0.01) and coords.x <= (_movePos.x + 0.01) and coords.y >= (_movePos.y - 0.01) and coords.y <= (_movePos.y + 0.01) then
                 _isMoved = true
             end

@@ -2,8 +2,7 @@ local isRoll = false
 local amount = Config.Amount
 local car = false
 
-RegisterServerEvent('qb-luckywheel:getLucky')
-AddEventHandler('qb-luckywheel:getLucky', function()
+RegisterNetEvent('qb-luckywheel:getLucky', function()
     local source = source
     local xPlayer = QBCore.Functions.GetPlayer(source)
     if not isRoll then
@@ -124,14 +123,14 @@ AddEventHandler('qb-luckywheel:getLucky', function()
                         xPlayer.Functions.AddItem('weapon_pistol50', 1)
                         TriggerClientEvent('QBCore:Notify', source, 'You Won A .50 Pistol!', 'success')
                     elseif _priceIndex == 19 then
-                        TriggerClientEvent('qb-luckywheel:winCar', source)
+                        TriggerClientEvent('qb-luckywheel:client:winCar', source)
                         car = true
                     end
-                    TriggerClientEvent('qb-luckywheel:rollFinished', -1)
+                    TriggerClientEvent('qb-luckywheel:client:rollFinished', -1)
                 end)
-                TriggerClientEvent('qb-luckywheel:doRoll', -1, _priceIndex)
+                TriggerClientEvent('qb-luckywheel:client:doRoll', -1, _priceIndex)
             else
-                TriggerClientEvent('qb-luckywheel:rollFinished', -1)    
+                TriggerClientEvent('qb-luckywheel:client:rollFinished', -1)    
                 TriggerClientEvent('QBCore:Notify', source, 'You Need '..amount..' Chips To Spin!', 'error')
             end
         end
@@ -140,8 +139,7 @@ end)
 
     
 
-RegisterServerEvent('qb-luckywheel:carRedeem')
-AddEventHandler('qb-luckywheel:carRedeem', function(vehicleProps)
+RegisterNetEvent('qb-luckywheel:server:carRedeem', function(vehicleProps)
     local source = source
     veh = Config.Vehicle
     storedGarage = 'caears242'
@@ -166,7 +164,7 @@ AddEventHandler('qb-luckywheel:carRedeem', function(vehicleProps)
     if car then
         car = false 
         TriggerClientEvent('QBCore:Notify', source, 'You won a car!', 'success')
-        TriggerClientEvent('qb-luckywheel:winCarEmail', source)
+        TriggerClientEvent('qb-luckywheel:client:winCarEmail', source)
         exports.oxmysql:insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, garage, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
             xPlayer.PlayerData.license,
             xPlayer.PlayerData.citizenid,

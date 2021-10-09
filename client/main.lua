@@ -3,71 +3,52 @@ local vehPos = Config.VehPos
 local wheel = nil
 local vehicle = nil
 local isRolling = false
-local isLoggedIn = false
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = true
-end)
-
-RegisterNetEvent('QBCore:Client:OnPlayerUnload')
-AddEventHandler('QBCore:Client:OnPlayerUnload', function()
-    isLoggedIn = false
-end)
-
-Citizen.CreateThread(function()
+CreateThread(function()
     local model = `vw_prop_vw_luckywheel_02a`
     local carmodel = Config.Vehicle
-    
-    Citizen.CreateThread(function()
-        while not isLoggedIn do 
-            Citizen.Wait(500)
-        end
 
-        if isLoggedIn then
-            
-            -- Wheel
-            RequestModel(model)
-            while not HasModelLoaded(model) do
-                Citizen.Wait(0)
-            end
-            wheel = CreateObject(model, wheelPos.x, wheelPos.y, wheelPos.z, false, false, true)
-            SetEntityHeading(wheel, 328.0)
-            SetModelAsNoLongerNeeded(model)
-            
-            -- Car
-            RequestModel(carmodel)
-            while not HasModelLoaded(carmodel) do
-                Citizen.Wait(0)
-            end
-            
-            vehicle = CreateVehicle(carmodel, vehPos, true, false)
-            SetModelAsNoLongerNeeded(carmodel)
-            FreezeEntityPosition(vehicle, true)
+    if LocalPlayer.state['isLoggedIn'] then
+        
+        -- Wheel
+        RequestModel(model)
+        while not HasModelLoaded(model) do
+            Wait(0)
         end
-    end)
+        wheel = CreateObject(model, wheelPos.x, wheelPos.y, wheelPos.z, false, false, true)
+        SetEntityHeading(wheel, 328.0)
+        SetModelAsNoLongerNeeded(model)
+        
+        -- Car
+        RequestModel(carmodel)
+        while not HasModelLoaded(carmodel) do
+            Wait(0)
+        end
+        
+        vehicle = CreateVehicle(carmodel, vehPos, true, false)
+        SetModelAsNoLongerNeeded(carmodel)
+        FreezeEntityPosition(vehicle, true)
+    end
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         if vehicle ~= nil then
             local _heading = GetEntityHeading(vehicle)
             local _z = _heading - 0.3
             SetEntityHeading(vehicle, _z)
         end
-        Citizen.Wait(5)
+        Wait(5)
     end
 end)
 
 
-RegisterNetEvent('qb-luckywheel:winCar')
-AddEventHandler('qb-luckywheel:winCar', function()
+RegisterNetEvent('qb-luckywheel:client:winCar', function()
     local vehicleProps = QBCore.Functions.GetVehicleProperties(vehicle)
-    TriggerServerEvent('qb-luckywheel:carRedeem', vehicleProps)
+    TriggerServerEvent('qb-luckywheel:server:carRedeem', vehicleProps)
 end)
 
-RegisterNetEvent('qb-luckywheel:winCarEmail')
-AddEventHandler('qb-luckywheel:winCarEmail', function()
+RegisterNetEvent('qb-luckywheel:client:winCarEmail', function()
     TriggerServerEvent('qb-phone:server:sendNewMail', {
         sender = 'The Diamond Casino',
         subject = 'Your new car!',
@@ -75,11 +56,10 @@ AddEventHandler('qb-luckywheel:winCarEmail', function()
     })
 end)
 
-RegisterNetEvent('qb-luckywheel:doRoll')
-AddEventHandler('qb-luckywheel:doRoll', function(_priceIndex)
+RegisterNetEvent('qb-luckywheel:client:doRoll', function(_priceIndex)
     isRolling = true
     SetEntityRotation(wheel, 0.0, 0.0, 0.0, 1, true)
-    Citizen.CreateThread(function()
+    CreateThread(function()
         local speedIntCnt = 1
         local rollspeed = 1.0
         local _winAngle = (_priceIndex - 1) * 18
@@ -101,13 +81,12 @@ AddEventHandler('qb-luckywheel:doRoll', function(_priceIndex)
             local _y = retval.y - rollspeed
             _rollAngle = _rollAngle - rollspeed
             SetEntityRotation(wheel, 0.0, _y, -30.9754, 2, true)
-            Citizen.Wait(0)
+            Wait(0)
         end
     end)
 end)
 
-RegisterNetEvent('qb-luckywheel:rollFinished')
-AddEventHandler('qb-luckywheel:rollFinished', function()
+RegisterNetEvent('qb-luckywheel:client:rollFinished', function()
     isRolling = false
 end)
 
@@ -144,16 +123,16 @@ function doRoll()
             Citizen.Wait(0)
             DisableAllControlActions(0)
         end
-        TriggerServerEvent('qb-luckywheel:getLucky')
+        TriggerServerEvent('qb-luckywheel:server:getLucky')
         TaskPlayAnim(playerPed, lib, 'armraisedidle_to_spinningidle_high', 8.0, -8.0, -1, 0, 0, false, false, false)
     
     end
 end
 
 -- 3D Text
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(1)
+        Wait(5)
         local coords = GetEntityCoords(PlayerPedId())
         if #(coords - vector3(wheelPos.x, wheelPos.y, wheelPos.z)) < 1.5 and not isRolling then
             QBCore.Functions.DrawText3D(wheelPos.x, wheelPos.y, wheelPos.z + 1, 'Press ~g~E~w~ To Try Your Luck On The Wheel')

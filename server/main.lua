@@ -155,7 +155,7 @@ AddEventHandler('qb-luckywheel:carRedeem', function(vehicleProps)
         Citizen.Wait(0)
         local plateNumbers = math.random(1000,9999)
         local testplate = plate..plateNumbers
-        local result = exports.ghmattimysql:scalarSync('SELECT * from player_vehicles WHERE plate=@plate', {['@plate'] = plate})
+        local result = exports.oxmysql:scalarSync('SELECT * from player_vehicles WHERE plate=  = ?', {plate})
             plateAvailable = result[1]
         if plateAvailable == nil then
             vehicleProps.plate = testplate
@@ -167,15 +167,15 @@ AddEventHandler('qb-luckywheel:carRedeem', function(vehicleProps)
         car = false 
         TriggerClientEvent('QBCore:Notify', source, 'You won a car!', 'success')
         TriggerClientEvent('qb-luckywheel:winCarEmail', source)
-        exports.ghmattimysql:execute('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, garage, state) VALUES (@license, @citizenid, @vehicle, @hash, @mods, @plate, @garage, @state)', {
-            ['@license'] = xPlayer.PlayerData.license,
-            ['@citizenid'] = xPlayer.PlayerData.citizenid,
-            ['@vehicle'] = veh,
-            ['@hash'] = `veh`,
-            ['@mods'] = vehiclePropsjson,
-            ['@plate'] = vehicleProps.plate,
-            ['@garage'] = storedGarage,
-            ['@state'] = stateVehicle
+        exports.oxmysql:insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, garage, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
+            xPlayer.PlayerData.license,
+            xPlayer.PlayerData.citizenid,
+            veh,
+            `veh`,
+            vehiclePropsjson,
+            vehicleProps.plate,
+            storedGarage,
+            stateVehicle
         })
     else
         --can ban here, would be a modder triggering event to get a free car

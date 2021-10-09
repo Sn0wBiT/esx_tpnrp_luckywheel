@@ -156,7 +156,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
         local coords = GetEntityCoords(PlayerPedId())
         if #(coords - vector3(wheelPos.x, wheelPos.y, wheelPos.z)) < 1.5 and not isRolling then
-            QBCore.Functions.DrawText3D(wheelPos.x, wheelPos.y, wheelPos.z + 1, 'Press ~p~E~w~ To Try Your Luck On The Wheel')
+            QBCore.Functions.DrawText3D(wheelPos.x, wheelPos.y, wheelPos.z + 1, 'Press ~g~E~w~ To Try Your Luck On The Wheel')
             if IsControlJustReleased(0, 38) then
                 doRoll()
             end

@@ -6,9 +6,9 @@ RegisterNetEvent('qb-luckywheel:getLucky', function()
     local source = source
     local xPlayer = QBCore.Functions.GetPlayer(source)
     if not isRoll then
-        if xPlayer ~= nil then
+        if xPlayer then
             local chips = xPlayer.Functions.GetItemByName('casinochips')
-            if chips ~= nil and chips.amount >= amount then
+            if chips and chips.amount >= amount then
                 xPlayer.Functions.RemoveItem('casinochips', amount)
                 isRoll = true
 

@@ -33,7 +33,7 @@ end)
 
 CreateThread(function()
     while true do
-        if vehicle ~= nil then
+        if vehicle then
             local _heading = GetEntityHeading(vehicle)
             local _z = _heading - 0.3
             SetEntityHeading(vehicle, _z)

@@ -1,3 +1,4 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 local wheelPos = Config.WheelPos
 local vehPos = Config.VehPos
 local wheel = nil

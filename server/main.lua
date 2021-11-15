@@ -1,8 +1,9 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 local isRoll = false
 local amount = Config.Amount
 local car = false
 
-RegisterNetEvent('qb-luckywheel:getLucky', function()
+RegisterNetEvent('qb-luckywheel:server:getLucky', function()
     local source = source
     local xPlayer = QBCore.Functions.GetPlayer(source)
     if not isRoll then

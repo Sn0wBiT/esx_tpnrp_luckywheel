@@ -3,7 +3,10 @@ local _wheel = nil
 local _lambo = nil
 local _isShowCar = false
 local _wheelPos = vector3(949.02, 63.05, 75.99)
-local _baseWheelPos = vector3(948.5, 63.37, 75.01)
+local _baseWheelPos = vector3(948.5, 63.37, 75.01
+local _gotoPos = vector3(948.39, 62.14, 75.99)
+local _wheelHeading = 90.0
+local _vehPos = {x = 953.7, y = 70.08, z = 75.23}
 
 local casinoprops = {}
 
@@ -39,8 +42,9 @@ Citizen.CreateThread(function()
                 Citizen.Wait(0)
             end
 
+					-- NEED TO CHANGE TO WHEEL POS local!
             _wheel = CreateObject(model, 948.5, 63.37, 75.28, false, false, true)
-            SetEntityHeading(_wheel, 58.32)
+            SetEntityHeading(_wheel, _wheelHeading)
             SetModelAsNoLongerNeeded(model)
             spawnveh()
             table.insert(casinoprops, _wheel)
@@ -63,7 +67,7 @@ end)
 RegisterNetEvent("esx_tpnrp_luckywheel:doRoll")
 AddEventHandler("esx_tpnrp_luckywheel:doRoll", function(_priceIndex)
     _isRolling = true
-    SetEntityHeading(_wheel, -30.9754)
+ 
     SetEntityRotation(_wheel, 0.0, 0.0, 0.0, 1, true)
     Citizen.CreateThread(function()
         local speedIntCnt = 1
@@ -93,7 +97,7 @@ AddEventHandler("esx_tpnrp_luckywheel:doRoll", function(_priceIndex)
             --         _y = _winAngle
             --     end
             -- end
-            SetEntityRotation(_wheel, 0.0, _y, 58.32, 1, true)
+            SetEntityRotation(_wheel, 0.0, _y, 0.0, 1, true)
             Citizen.Wait(0)
         end
     end)
@@ -115,7 +119,7 @@ function doRoll()
         end
         local lib, anim = _lib, 'enter_right_to_baseidle'
         ESX.Streaming.RequestAnimDict(lib, function()
-            local _movePos = vector3(948.39, 62.14, 75.99)
+            local _movePos = _gotoPos
             TaskGoStraightToCoord(playerPed, _movePos.x, _movePos.y, _movePos.z, 1.0, -1, 34.52, 0.0)
             local _isMoved = false
             while not _isMoved do
@@ -158,7 +162,7 @@ end)
 function spawnveh()
     Zones = {
         VehicleSpawnPoint = {
-            Pos   = {x = 953.7, y = 70.08, z = 75.23},
+            Pos   = _vehPos,
             Heading = 182.73
         }
     }

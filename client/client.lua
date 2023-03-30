@@ -3,7 +3,7 @@ local _wheel = nil
 local _lambo = nil
 local _isShowCar = false
 local _wheelPos = vector3(949.02, 63.05, 75.99)
-local _baseWheelPos = vector3(948.5, 63.37, 75.01
+local _baseWheelPos = vector3(948.5, 63.37, 75.01)
 local _gotoPos = vector3(948.39, 62.14, 75.99)
 local _wheelHeading = 90.0
 local _vehPos = {x = 953.7, y = 70.08, z = 75.23}
